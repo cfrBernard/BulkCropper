@@ -1,25 +1,40 @@
 from dataclasses import dataclass
 
-
 @dataclass
 class Config:
-    # --- IO ---
-    input_path: str = "data/input"
-    output_path: str = "data/output"
 
-    # --- detection ---
-    min_area: int = 400
+    input_path = "data/input"
+    output_path = "data/output"
+    debug_path = "var/debug"
 
-    # --- crop ---
-    padding: int = 20
-    output_size: int = 512
+    debug = True
 
-    # --- background ---
-    background: str = "white"  # "white" | "transparent"
+    output_size = 512
 
-    # --- debug ---
-    debug: bool = False
-    debug_path: str = "var/debug"
+    background_threshold = 245
 
-    # --- behavior ---
-    save_debug_overlay: bool = True
+    gaussian_blur = 5
+
+    morph_kernel = 3
+
+    morph_iterations = 2
+
+    padding_ratio = 0.08
+
+    min_padding = 10
+
+    min_area = 300
+
+    border_margin = 4
+
+    remove_border_objects = True
+ 
+    # square_output = True
+    # 
+    # transparent_png = True
+    # 
+    # adaptive = False
+    # 
+    # adaptive_blocksize = 31
+    # 
+    # adaptive_c = 8

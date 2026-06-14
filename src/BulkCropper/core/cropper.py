@@ -1,38 +1,60 @@
+from pathlib import Path
+
 import cv2
 import numpy as np
 
+from .debug import save_debug
 
-def crop_objects(image, boxes, padding=20, size=512):
-    crops = []
 
-    h_img, w_img = image.shape[:2]
+def export_crops(
+    image,
+    image_path,
+    boxes,
+    mask,
+    cfg,
+    debug,
+):
 
-    for (x, y, w, h) in boxes:
+    out_dir = Path(cfg.output_path) / image_path.stem
+
+    out_dir.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    for idx, (x, y, w, h) in enumerate(boxes):
+
+        padding = max(
+            cfg.min_padding,
+            int(max(w, h) * cfg.padding_ratio),
+        )
 
         x1 = max(0, x - padding)
         y1 = max(0, y - padding)
-        x2 = min(w_img, x + w + padding)
-        y2 = min(h_img, y + h + padding)
+
+        x2 = min(image.shape[1], x + w + padding)
+        y2 = min(image.shape[0], y + h + padding)
 
         crop = image[y1:y2, x1:x2]
 
-        crop = make_square(crop, size)
+        crop_mask = mask[y1:y2, x1:x2]
 
-        crops.append(crop)
+        rgba = cv2.cvtColor(
+            crop,
+            cv2.COLOR_BGR2BGRA,
+        )
 
-    return crops
+        rgba[:, :, 3] = crop_mask
 
+        cv2.imwrite(
+            str(
+                out_dir / f"piece_{idx+1:04d}.png"
+            ),
+            rgba,
+        )
 
-def make_square(img, size):
-    h, w = img.shape[:2]
-
-    max_side = max(h, w)
-
-    canvas = np.ones((max_side, max_side, 3), dtype=np.uint8) * 255
-
-    y_offset = (max_side - h) // 2
-    x_offset = (max_side - w) // 2
-
-    canvas[y_offset:y_offset+h, x_offset:x_offset+w] = img
-
-    return cv2.resize(canvas, (size, size))
+    save_debug(
+        image_path.stem,
+        debug,
+        cfg,
+    )

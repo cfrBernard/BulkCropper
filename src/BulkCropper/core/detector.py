@@ -1,36 +1,52 @@
 import cv2
-import numpy as np
 
 
-def detect_objects(image, min_area=400):
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+def detect_objects(mask, cfg, debug):
 
-    blur = cv2.GaussianBlur(gray, (5, 5), 0)
-
-    _, thresh = cv2.threshold(
-        blur,
-        0,
-        255,
-        cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU
-    )
-
-    kernel = np.ones((3, 3), np.uint8)
-    thresh = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel, iterations=2)
-
-    contours, _ = cv2.findContours(
-        thresh,
-        cv2.RETR_EXTERNAL,
-        cv2.CHAIN_APPROX_SIMPLE
-    )
+    count, labels, stats, centroids = cv2.connectedComponentsWithStats(mask)
 
     boxes = []
 
-    for c in contours:
-        area = cv2.contourArea(c)
-        if area < min_area:
+    overlay = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
+
+    for i in range(1, count):
+
+        x = stats[i, cv2.CC_STAT_LEFT]
+        y = stats[i, cv2.CC_STAT_TOP]
+        w = stats[i, cv2.CC_STAT_WIDTH]
+        h = stats[i, cv2.CC_STAT_HEIGHT]
+        area = stats[i, cv2.CC_STAT_AREA]
+
+        if area < cfg.min_area:
             continue
 
-        x, y, w, h = cv2.boundingRect(c)
-        boxes.append((x, y, w, h))
+        if cfg.remove_border_objects:
+
+            if (
+                x <= cfg.border_margin
+                or y <= cfg.border_margin
+                or x + w >= mask.shape[1] - cfg.border_margin
+                or y + h >= mask.shape[0] - cfg.border_margin
+            ):
+                continue
+
+        boxes.append(
+            (
+                x,
+                y,
+                w,
+                h,
+            )
+        )
+
+        cv2.rectangle(
+            overlay,
+            (x, y),
+            (x + w, y + h),
+            (0, 255, 0),
+            2,
+        )
+
+    debug["boxes"] = overlay
 
     return boxes
