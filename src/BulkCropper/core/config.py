@@ -15,7 +15,7 @@ class Config:
     # =========================
     # GENERAL
     # =========================
-    output_size: int = 512
+    # output_size: int = 512
 
     # =========================
     # SEGMENTATION COLOR

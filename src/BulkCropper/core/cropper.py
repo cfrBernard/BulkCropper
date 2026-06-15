@@ -37,20 +37,11 @@ def export_crops(
 
         crop = image[y1:y2, x1:x2]
 
-        crop_mask = mask[y1:y2, x1:x2]
-
-        rgba = cv2.cvtColor(
-            crop,
-            cv2.COLOR_BGR2BGRA,
-        )
-
-        rgba[:, :, 3] = crop_mask
-
         cv2.imwrite(
             str(
                 out_dir / f"piece_{idx+1:04d}.png"
             ),
-            rgba,
+            crop,
         )
 
     save_debug(
