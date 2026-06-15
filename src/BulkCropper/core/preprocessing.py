@@ -18,7 +18,8 @@ def preprocess(image, cfg):
     # MASK COLOR
     # =========================
     mask_color = (s > cfg.saturation_threshold).astype(np.uint8) * 255
-    debug["02_mask_color"] = mask_color
+    debug["02_saturation"] = s
+    debug["03_mask_color"] = mask_color
 
     # =========================
     # EDGES
@@ -30,7 +31,7 @@ def preprocess(image, cfg):
     )
 
     edges = cv2.Canny(gray, cfg.canny_low, cfg.canny_high)
-    debug["03_edges"] = edges
+    debug["04_edges"] = edges
 
     # =========================
     # EDGE DILATION
@@ -46,7 +47,7 @@ def preprocess(image, cfg):
         iterations=cfg.edge_dilate_iterations
     )
 
-    debug["04_edges_dilated"] = edges_dilated
+    debug["05_edges_dilated"] = edges_dilated
 
     # =========================
     # FILL CONTOURS
@@ -60,13 +61,13 @@ def preprocess(image, cfg):
     filled = np.zeros_like(gray)
     cv2.drawContours(filled, contours, -1, 255, thickness=cv2.FILLED)
 
-    debug["05_filled"] = filled
+    debug["06_filled"] = filled
 
     # =========================
     # COMBINATION
     # =========================
     mask = cv2.bitwise_or(mask_color, filled)
-    debug["06_combined"] = mask
+    debug["07_combined"] = mask
 
     # =========================
     # CLEANING
@@ -78,7 +79,5 @@ def preprocess(image, cfg):
 
     mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel, iterations=cfg.morph_iterations)
     mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations=cfg.morph_iterations)
-
-    debug["08_final"] = mask
 
     return mask, debug

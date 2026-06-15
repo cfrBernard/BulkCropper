@@ -47,6 +47,6 @@ def detect_objects(mask, cfg, debug):
             2,
         )
 
-    debug["07_boxes"] = overlay
+    debug["08_boxes"] = overlay
 
     return boxes
