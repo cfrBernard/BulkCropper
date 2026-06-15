@@ -3,40 +3,53 @@ from dataclasses import dataclass
 @dataclass
 class Config:
 
-    input_path = "data/input"
-    output_path = "data/output"
-    debug_path = "var/debug"
+    # =========================
+    # IO
+    # =========================
+    input_path: str = "data/input"
+    output_path: str = "data/output"
+    debug_path: str = "var/debug"
+    
+    debug: bool = True
 
-    debug = True
+    # =========================
+    # GENERAL
+    # =========================
+    output_size: int = 512
 
-    output_size = 512
+    # =========================
+    # SEGMENTATION COLOR
+    # =========================
+    saturation_threshold: int = 40
 
-    background_threshold = 245
+    # =========================
+    # EDGE SYSTEM
+    # =========================
+    canny_low: int = 40
+    canny_high: int = 120
 
-    saturation_threshold = 40
+    edge_kernel_size: int = 3
+    edge_dilate_iterations: int = 2
 
     gaussian_blur = 5
 
-    morph_kernel = 3
+    # =========================
+    # MORPHOLOGY
+    # =========================
+    morph_kernel: int = 3
+    morph_iterations: int = 2
 
-    morph_iterations = 2
+    # =========================
+    # FILTERING
+    # =========================
+    min_area: int = 300
+    max_area: int = 10_000_000
 
-    padding_ratio = 0.08
+    border_margin: int = 4
+    remove_border_objects: bool = True
 
-    min_padding = 10
-
-    min_area = 300
-
-    border_margin = 4
-
-    remove_border_objects = True
- 
-    # square_output = True
-    # 
-    # transparent_png = True
-    # 
-    # adaptive = False
-    # 
-    # adaptive_blocksize = 31
-    # 
-    # adaptive_c = 8
+    # =========================
+    # CROP
+    # =========================
+    padding_ratio: float = 0.08
+    min_padding: int = 10
