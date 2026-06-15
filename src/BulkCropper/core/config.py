@@ -13,6 +13,8 @@ class Config:
 
     background_threshold = 245
 
+    saturation_threshold = 40
+
     gaussian_blur = 5
 
     morph_kernel = 3

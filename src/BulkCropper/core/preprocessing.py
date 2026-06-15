@@ -1,54 +1,32 @@
 import cv2
+import numpy as np
 
 
 def preprocess(image, cfg):
 
     debug = {}
-
     debug["original"] = image.copy()
 
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-    debug["gray"] = gray
+    h, s, v = cv2.split(hsv)
 
-    blur = cv2.GaussianBlur(
-        gray,
-        (cfg.gaussian_blur, cfg.gaussian_blur),
-        0,
-    )
+    debug["saturation"] = s
+    debug["value"] = v
 
-    debug["blur"] = blur
+    # MAIN MASK (LEGO = colors)
+    mask = (s > cfg.saturation_threshold).astype(np.uint8) * 255
 
-    _, threshold = cv2.threshold(
-        blur,
-        cfg.background_threshold,
-        255,
-        cv2.THRESH_BINARY_INV,
-    )
-
-    debug["threshold"] = threshold
+    debug["mask_raw"] = mask
 
     kernel = cv2.getStructuringElement(
         cv2.MORPH_ELLIPSE,
         (cfg.morph_kernel, cfg.morph_kernel),
     )
 
-    opened = cv2.morphologyEx(
-        threshold,
-        cv2.MORPH_OPEN,
-        kernel,
-        iterations=cfg.morph_iterations,
-    )
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel, iterations=cfg.morph_iterations)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations=cfg.morph_iterations)
 
-    debug["open"] = opened
+    debug["final_mask"] = mask
 
-    closed = cv2.morphologyEx(
-        opened,
-        cv2.MORPH_CLOSE,
-        kernel,
-        iterations=cfg.morph_iterations,
-    )
-
-    debug["final_mask"] = closed
-
-    return closed, debug
+    return mask, debug
