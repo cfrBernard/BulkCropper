@@ -33,7 +33,7 @@ The project intentionally keeps its dependency stack minimal, relying only on:
 ---
 
 <p align="center">
-  <img src="docs/assets/CropDemo.PNG" alt="BulkCropper Demo" />
+  <img src="docs/assets/CropDemo.png" alt="BulkCropper Demo" />
 </p>
 
 <p align="center">
