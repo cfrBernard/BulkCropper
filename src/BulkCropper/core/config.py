@@ -10,12 +10,7 @@ class Config:
     output_path: str = "data/output"
     debug_path: str = "var/debug"
     
-    debug: bool = True
-
-    # =========================
-    # GENERAL
-    # =========================
-    # output_size: int = 512
+    debug: bool = False
 
     # =========================
     # SEGMENTATION COLOR

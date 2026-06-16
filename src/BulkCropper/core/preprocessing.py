@@ -13,12 +13,12 @@ def preprocess(image, cfg):
     h, s, v = cv2.split(hsv)
 
     debug["01_gray"] = gray
+    debug["02_saturation"] = s
 
     # =========================
     # MASK COLOR
     # =========================
     mask_color = (s > cfg.saturation_threshold).astype(np.uint8) * 255
-    debug["02_saturation"] = s
     debug["03_mask_color"] = mask_color
 
     # =========================
