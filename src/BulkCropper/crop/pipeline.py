@@ -1,13 +1,13 @@
 from pathlib import Path
 
-from .core.config import Config
-from .core.io import load_images
-from .core.preprocessing import preprocess
-from .core.detector import detect_objects
-from .core.cropper import export_crops
+from .config import Config
+from .io import load_images
+from .preprocessing import preprocess
+from .detector import detect_objects
+from .cropper import export_crops
 
 
-def run_pipeline():
+def run_pipeline(args):
 
     cfg = Config()
 
