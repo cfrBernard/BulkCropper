@@ -18,7 +18,7 @@ The project intentionally keeps its dependency stack minimal, relying only on:
 
 > No machine learning model, no neural network and no external API are required for the core functionality.
 
-![Version](https://img.shields.io/badge/version-v1.0.0-blue)
+![Version](https://img.shields.io/badge/version-v1.1.1-blue)
 ![License](https://img.shields.io/github/license/cfrBernard/BulkCropper)
 
 ## Features:
@@ -167,8 +167,8 @@ Performance mainly depends on:
 
 ## Notes
 - This tool is currently focused on **crop only**, but it will evolve to support the Brickognize API.
-- You can find a debugging and configuration guide [here](docs/config-guide.md).
-- If you are interested in the roadmap and want to know what's coming : [here](docs/roadmap.md).
+- You can find a [debugging and configuration guide here](docs/config-guide.md).
+- If you are interested in the roadmap and want to know [what's coming](docs/roadmap.md).
 - If you prefer a dev oriented overview, you can go to the [dev insight file](docs/dev-insight.md).
 - For more information about the version, please refer to the [changelog](docs/CHANGELOG.md) section.
 - This project is licensed under the MIT License. See the [LICENSE](./LICENSE.md) file for details.

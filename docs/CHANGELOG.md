@@ -1,5 +1,27 @@
 # Changelog
 
+## [v1.1.1] – 2026-06-17
+
+### Fixes
+
+* Docs / version fixes
+
+---
+
+## [v1.1.0] – 2026-06-17
+
+#### **Structure setup for the future API system**
+
+### Added
+
+* Separation of systems
+* New find folder (src/BulkCropper/find/)
+* Core folder rename (src/BulkCropper/crop/)
+* Each will have their own pipeline / config
+* Same CLI for both systems (parser / args)
+
+---
+
 ## [v1.0.0] – 2026-06-16
 
 #### **Initial Public Release**
