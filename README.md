@@ -1,6 +1,6 @@
 # BulkCropper
 
-**BulkCropper** is a lightweight computer vision tool written in Python that automatically detects, segments and crops multiple objects from a single image.
+**BulkCropper** is a lightweight computer vision tool written in Python that automatically detects, segments and crops multiple objects from a single image. **Now with an optional Brickognize API integration.**
 
 While the project is primarily designed for LEGO parts, the underlying detection pipeline is generic enough to work with many other isolated objects placed on a clean background.
 
@@ -18,7 +18,7 @@ The project intentionally keeps its dependency stack minimal, relying only on:
 
 > No machine learning model, no neural network and no external API are required for the core functionality.
 
-![Version](https://img.shields.io/badge/version-v1.1.1-blue)
+![Version](https://img.shields.io/badge/version-v2.0.0-blue)
 ![License](https://img.shields.io/github/license/cfrBernard/BulkCropper)
 
 ## Features:
@@ -29,6 +29,7 @@ The project intentionally keeps its dependency stack minimal, relying only on:
 - Generates debug overlays
 - Lightweight dependency stack
 - Designed for LEGO datasets but applicable to many object types
+- **Optional Brickognize API integration (v2)**
 
 ---
 
@@ -92,7 +93,7 @@ pip install -e .
 #### 2. Then run:
 
 ```
-BulkCropper
+BulkCropper crop
 ```
 
 #### 3. Detected objects will be exported to `data/output/<image_name>/`
@@ -165,8 +166,17 @@ Performance mainly depends on:
 
 ---
 
+## Integrations (v2)
+
+BulkCropper now supports optional external integrations.
+
+- Brickognize API: LEGO part identification from cropped images
+
+👉 See documentation: [`docs/integrations/brickognize.md`](docs/integrations/brickognize.md)
+
+---
+
 ## Notes
-- This tool is currently focused on **crop only**, but it will evolve to support the Brickognize API.
 - You can find a [debugging and configuration guide here](docs/config-guide.md).
 - If you are interested in the roadmap and want to know [what's coming](docs/roadmap.md).
 - If you prefer a dev oriented overview, you can go to the [dev insight file](docs/dev-insight.md).

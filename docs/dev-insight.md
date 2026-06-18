@@ -23,6 +23,17 @@ But, If the algorithm performs well on LEGO pieces, it generally performs well o
 
 ---
 
+## Brickognize API integration (v2)
+
+The Brickognize module is fully decoupled from the cropping pipeline.
+
+Reason:
+- crop pipeline must remain deterministic and offline
+- API calls introduce latency and failure points
+- separation allows optional usage
+
+---
+
 ## Structure
 
 ```
@@ -40,16 +51,22 @@ BulkCropper/
 │       ├── __init__.py
 │       ├── __main__.py
 │       ├── cli.py
-│       ├── core/
+│       ├── crop/
 │       │   ├── __init__.py
 │       │   ├── config.py
 │       │   ├── cropper.py
 │       │   ├── debug.py
 │       │   ├── detector.py
 │       │   ├── io.py
-│       │   ├── preprocessing.py
-│       │   └── utils.py
-│       └── pipeline.py
+│       │   ├── pipeline.py
+│       │   └── preprocessing.py
+│       └── find/
+│           ├── __init__.py
+│           ├── api.py
+│           ├── cache.py
+│           ├── config.py
+│           ├── io.py
+│           └── pipeline.py
 ├── tests/
 └── var/
     ├── cache/
@@ -60,7 +77,7 @@ BulkCropper/
 
 ---
 
-## Processing pipeline
+## Crop Processing pipeline
 
 BulkCropper follows a deterministic computer vision pipeline:
 
@@ -84,5 +101,40 @@ PNG Export
 ```
 
 > Each stage can be inspected through the debug system for easier tuning.
+
+---
+
+## API Processing pipeline
+
+```
+BulkCropper find
+        │
+        ▼
+scan data/output/
+        │
+        ▼
+for each folder
+        │
+        ├── AllImg.png
+        │
+        ▼
+SHA256 image
+        │
+        ▼
+
+cache ?
+     │        │
+    yes      no
+     │        │
+     │ Brickognize call
+     │        │
+     └────────┘
+              │
+              ▼
+      normalized result
+              │
+              ▼
+      brickognize.json
+```
 
 ---

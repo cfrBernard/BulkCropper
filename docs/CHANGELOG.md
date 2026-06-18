@@ -1,5 +1,18 @@
 # Changelog
 
+## [v2.0.0] – 2026-06-18
+
+#### **Optional Brickognize API integration**
+
+### Added
+
+- Brickognize API integration module
+- new `find/` pipeline
+- optional LEGO part identification step after cropping
+- New CLI : `BulkCropper crop` & `BulkCropper find`
+
+---
+
 ## [v1.1.1] – 2026-06-17
 
 ### Fixes
