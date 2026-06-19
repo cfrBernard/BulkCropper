@@ -7,34 +7,33 @@ from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
 
 class ImageCard(QWidget):
 
-    # envoyé au click simple
     clicked = Signal(dict)
+
+    WIDTH = 120
+    HEIGHT = 140
 
     def __init__(self, data: dict):
         super().__init__()
 
-        self.data = data
+        self.data = data or {}
 
-        self.setFixedSize(160, 200)
+        self.setFixedSize(self.WIDTH, self.HEIGHT)
         self.setCursor(Qt.PointingHandCursor)
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(6, 6, 6, 6)
         layout.setSpacing(4)
 
-        # -------------------------
+        # -------------------
         # IMAGE
-        # -------------------------
+        # -------------------
         self.image = QLabel()
         self.image.setAlignment(Qt.AlignCenter)
-        self.image.setFixedHeight(140)
+        self.image.setFixedHeight(90)
 
-        # -------------------------
-        # TEXTS
-        # -------------------------
-        self.filename = QLabel(data.get("unknown"))
-        self.filename.setAlignment(Qt.AlignCenter)
-
+        # -------------------
+        # STATUS
+        # -------------------
         self.status = QLabel()
         self.status.setAlignment(Qt.AlignCenter)
 
@@ -46,11 +45,10 @@ class ImageCard(QWidget):
         self._update_status()
         self._update_tooltip()
 
-    # -------------------------
-    # LOAD IMAGE
-    # -------------------------
+    # -------------------
+    # IMAGE LOADING
+    # -------------------
     def _load_image(self):
-
         path = Path(self.data.get("image_path", ""))
 
         if not path.exists():
@@ -72,17 +70,14 @@ class ImageCard(QWidget):
 
         self.image.setPixmap(pixmap)
 
-    # -------------------------
+    # -------------------
     # STATUS
-    # -------------------------
+    # -------------------
     def _update_status(self):
-
         status = self.data.get("status", "UNKNOWN")
 
         if status == "OK":
-
             items = self.data.get("items", [])
-
             if items:
                 self.status.setText(f"🟢 {items[0].get('id', '')}")
             else:
@@ -97,50 +92,46 @@ class ImageCard(QWidget):
         else:
             self.status.setText("⚪ Unknown")
 
-    # -------------------------
-    # TOOLTIP
-    # -------------------------
+    # -------------------
+    # TOOLTIP (SAFE)
+    # -------------------
     def _update_tooltip(self):
-
         if self.data.get("status") != "OK":
             return
 
         items = self.data.get("items", [])
-
         if not items:
             return
 
         item = items[0]
 
-        self.setToolTip(
-            f"{item.get('id','')}\n\n{item.get('name','')}"
-        )
+        # SAFE ACCESS (dict only, normalisé par output_scanner)
+        item_id = item.get("id", "")
+        name = item.get("name", "")
 
-    # -------------------------
+        self.setToolTip(f"{item_id}\n\n{name}")
+
+    # -------------------
     # CLICK
-    # -------------------------
+    # -------------------
     def mousePressEvent(self, event):
-
         if event.button() == Qt.LeftButton:
             self.clicked.emit(self.data)
 
         super().mousePressEvent(event)
 
-    # -------------------------
+    # -------------------
     # DOUBLE CLICK
-    # -------------------------
+    # -------------------
     def mouseDoubleClickEvent(self, event):
-
         if event.button() != Qt.LeftButton:
             return
 
         items = self.data.get("items", [])
-
         if not items:
             return
 
         url = items[0].get("bricklink")
-
         if url:
             QDesktopServices.openUrl(QUrl(url))
 

@@ -3,6 +3,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QLabel,
     QPushButton,
+    QSizePolicy,
 )
 
 
@@ -11,24 +12,39 @@ class Sidebar(QWidget):
     def __init__(self):
         super().__init__()
 
+        self.setFixedWidth(220)
+
         layout = QVBoxLayout(self)
+        layout.setSpacing(10)
 
-        layout.addWidget(QLabel("Input"))
+        # --- INPUT LABEL ---
+        input_label = QLabel("INPUT : Place your bulk images in this input folder. See the docs for more information on image requirements.")
+        input_label.setWordWrap(True)
+        input_label.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
 
-        self.btn_open_input = QPushButton("Open")
+        layout.addWidget(input_label)
 
+        self.btn_open_input = QPushButton("Input folder")
         layout.addWidget(self.btn_open_input)
 
         layout.addSpacing(15)
 
-        layout.addWidget(QLabel("Output"))
+        # --- OUTPUT LABEL ---
+        output_label = QLabel(
+            "OUTPUT : The cropped images will appear here. "
+            "You can also inject cropped .png files if you want to find their references via the 'find' process."
+        )
+        output_label.setWordWrap(True)
+        output_label.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
 
-        self.btn_open_output = QPushButton("Open")
+        layout.addWidget(output_label)
 
+        self.btn_open_output = QPushButton("Output folder")
         layout.addWidget(self.btn_open_output)
 
         layout.addSpacing(30)
 
+        # --- ACTION BUTTONS ---
         self.btn_crop = QPushButton("Run Crop")
         self.btn_find = QPushButton("Run Find")
         self.btn_full = QPushButton("Full Pipeline")

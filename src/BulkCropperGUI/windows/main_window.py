@@ -20,7 +20,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("BulkCropper")
-        self.resize(1400, 900)
+        self.resize(920, 710)
 
         # ⚠️ TEMP FIX (plus tard: config file)
         output_root = Path("data/output")

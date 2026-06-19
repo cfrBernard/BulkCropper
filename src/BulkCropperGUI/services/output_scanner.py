@@ -29,6 +29,29 @@ def load_folder(folder_path: Path):
     return images, json_data
 
 
+def normalize_items(items):
+    if not items:
+        return []
+
+    normalized = []
+
+    for i in items:
+        if isinstance(i, dict):
+            normalized.append({
+                "id": i.get("id", ""),
+                "name": i.get("name", ""),
+                "bricklink": i.get("bricklink")
+            })
+        else:
+            normalized.append({
+                "id": str(i),
+                "name": "",
+                "bricklink": None
+            })
+
+    return normalized
+
+
 def index_json(json_data):
     """
     Convert list -> dict for fast lookup by filename
@@ -37,7 +60,12 @@ def index_json(json_data):
     if not json_data:
         return {}
 
-    return {
-        item["input_id"]: item
-        for item in json_data
-    }
+    indexed = {}
+
+    for item in json_data:
+        indexed[item["input_id"]] = {
+            "status": item.get("status", "UNKNOWN"),
+            "items": normalize_items(item.get("items", []))
+        }
+
+    return indexed
