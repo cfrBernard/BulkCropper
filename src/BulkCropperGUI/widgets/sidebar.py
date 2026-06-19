@@ -2,8 +2,8 @@ from BulkCropper.crop.config import Config
 
 import os
 
-from PySide6.QtCore import QUrl
-from PySide6.QtGui import QDesktopServices
+from PySide6.QtCore import QUrl, QSize
+from PySide6.QtGui import QDesktopServices, QIcon
 
 from PySide6.QtWidgets import (
     QWidget,
@@ -22,7 +22,26 @@ class Sidebar(QWidget):
         self.setFixedWidth(220)
 
         layout = QVBoxLayout(self)
+        
         layout.setSpacing(10)
+        layout.addSpacing(10)
+
+        # --- DOCS / GITHUB BTN ---
+        self.doc_btn = QPushButton("Documentation")
+
+        icon_path = os.path.join(
+            os.path.dirname(__file__),
+            "../../../assets/github.svg"
+        )
+
+        self.doc_btn.setIcon(QIcon(icon_path))
+        self.doc_btn.setIconSize(QSize(18, 18))
+
+        self.doc_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+        self.doc_btn.clicked.connect(self.open_docs)
+
+        layout.addWidget(self.doc_btn)
 
         # --- INPUT LABEL ---
         input_label = QLabel(
@@ -61,13 +80,43 @@ class Sidebar(QWidget):
         self.btn_open_output.clicked.connect(self.open_output_folder)
         layout.addWidget(self.btn_open_output)
 
-        layout.addSpacing(30)
+        layout.addSpacing(0) # ???
 
-        # --- ACTION BUTTONS ---
+        # --- CROP LABEL ---
+        crop_label = QLabel(
+            "RUN CROP : Once you have placed the images in the input folder click<br>"
+            "'run crop', and the crops should appear in the file explorer."
+        )
+        crop_label.setWordWrap(True)
+        crop_label.setSizePolicy(
+            QSizePolicy.Preferred,
+            QSizePolicy.Maximum,
+        )
+
+        layout.addWidget(crop_label)
+        # <br> + addSpacing(-15) ?? WTF ??
+        layout.addSpacing(-15)
+
         self.btn_crop = QPushButton("Run Crop")
+        
+        layout.addWidget(self.btn_crop)
+
+        layout.addSpacing(15)
+
+        # --- FIND LABEL ---
+        find_label = QLabel(
+            "RUN FIND : Click on 'run find' to find the reference bricklinks for each crop"
+        )
+        find_label.setWordWrap(True)
+        find_label.setSizePolicy(
+            QSizePolicy.Preferred,
+            QSizePolicy.Maximum,
+        )
+
+        layout.addWidget(find_label)
+
         self.btn_find = QPushButton("Run Find")
 
-        layout.addWidget(self.btn_crop)
         layout.addWidget(self.btn_find)
 
         layout.addStretch()
@@ -84,3 +133,6 @@ class Sidebar(QWidget):
         QDesktopServices.openUrl(
             QUrl.fromLocalFile(os.path.abspath(path))
         )
+
+    def open_docs(self):
+        QDesktopServices.openUrl(QUrl("https://github.com/cfrBernard/BulkCropper"))

@@ -42,6 +42,10 @@ class MainWindow(QMainWindow):
         self.explorer = Explorer(output_root)
         self.details = DetailsPanel()
 
+        self.explorer.image_selected.connect(
+            self.details.set_data
+        )
+
         right_layout.addWidget(self.explorer, 3)
         right_layout.addWidget(self.details, 1)
 
