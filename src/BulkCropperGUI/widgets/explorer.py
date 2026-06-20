@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from PySide6.QtCore import Signal
+from PySide6.QtCore import Signal, QFileSystemWatcher, QTimer
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -64,7 +64,62 @@ class Explorer(QWidget):
 
         self.layout.addWidget(self.scroll)
 
+        # -------------------
+        # filesystem watcher
+        # -------------------
+
+        self.watcher = QFileSystemWatcher(self)
+
+        self.watcher.directoryChanged.connect(
+            self._on_directory_changed
+        )
+
+        self.watcher.addPath(str(self.output_root))
+
+        # debounce
+        self.refresh_timer = QTimer(self)
+        self.refresh_timer.setSingleShot(True)
+        self.refresh_timer.setInterval(200)
+        self.refresh_timer.timeout.connect(
+            self._perform_refresh
+        )
+
+        self._refresh_folders = False
+
         self.load_folders()
+
+    # -------------------
+    # watcher
+    # -------------------
+
+    def _on_directory_changed(self, path):
+
+        path = Path(path)
+
+        if path == self.output_root:
+            self._refresh_folders = True
+
+        self.refresh_timer.start()
+
+    def _perform_refresh(self):
+
+        if self._refresh_folders:
+
+            current = self.current_folder
+
+            self.load_folders()
+
+            if current:
+                index = self.folder_selector.findText(current)
+
+                if index >= 0:
+                    self.folder_selector.setCurrentIndex(index)
+
+            self._refresh_folders = False
+
+        elif self.current_folder:
+
+            self.load_folder(self.current_folder)
 
     # -------------------
     # folders
@@ -74,12 +129,24 @@ class Explorer(QWidget):
 
         folders = list_folders(self.output_root)
 
+        current = self.folder_selector.currentText()
+
+        self.folder_selector.blockSignals(True)
         self.folder_selector.clear()
 
         for folder in folders:
             self.folder_selector.addItem(folder.name)
 
+        self.folder_selector.blockSignals(False)
+
+        if current:
+            index = self.folder_selector.findText(current)
+            if index >= 0:
+                self.folder_selector.setCurrentIndex(index)
+                return
+
         if folders:
+            self.folder_selector.setCurrentIndex(0)
             self.load_folder(folders[0].name)
 
     def on_folder_changed(self, folder_name):
@@ -96,14 +163,27 @@ class Explorer(QWidget):
 
         folder_path = self.output_root / folder_name
 
+        # retire les anciens watchers (sauf la racine)
+        for watched in self.watcher.directories():
+
+            if watched != str(self.output_root):
+
+                self.watcher.removePath(watched)
+
+        # surveille le dossier courant
+        if folder_path.exists():
+
+            self.watcher.addPath(str(folder_path))
+
         images, json_data = load_folder(folder_path)
 
-        indexed = index_json(json_data)
-
         self._images = images
-        self._indexed = indexed
+        self._indexed = index_json(json_data)
 
-        self.populate(images, indexed)
+        self.populate(
+            self._images,
+            self._indexed,
+        )
 
     def populate_current(self):
 

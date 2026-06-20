@@ -1,6 +1,7 @@
-from BulkCropper.crop.config import Config
-
 import os
+
+from BulkCropper.crop.config import Config
+from ..controllers.pipeline_controller import PipelineController
 
 from PySide6.QtCore import QUrl, QSize
 from PySide6.QtGui import QDesktopServices, QIcon
@@ -22,6 +23,8 @@ class Sidebar(QWidget):
         self.setFixedWidth(220)
 
         layout = QVBoxLayout(self)
+
+        self.pipeline_controller = PipelineController()
         
         layout.setSpacing(10)
         layout.addSpacing(10)
@@ -36,9 +39,7 @@ class Sidebar(QWidget):
 
         self.doc_btn.setIcon(QIcon(icon_path))
         self.doc_btn.setIconSize(QSize(18, 18))
-
         self.doc_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
         self.doc_btn.clicked.connect(self.open_docs)
 
         layout.addWidget(self.doc_btn)
@@ -98,7 +99,7 @@ class Sidebar(QWidget):
         layout.addSpacing(-15)
 
         self.btn_crop = QPushButton("Run Crop")
-        
+        self.btn_crop.clicked.connect(self.pipeline_controller.crop)
         layout.addWidget(self.btn_crop)
 
         layout.addSpacing(15)
@@ -116,7 +117,7 @@ class Sidebar(QWidget):
         layout.addWidget(find_label)
 
         self.btn_find = QPushButton("Run Find")
-
+        self.btn_find.clicked.connect(self.pipeline_controller.find)
         layout.addWidget(self.btn_find)
 
         layout.addStretch()
