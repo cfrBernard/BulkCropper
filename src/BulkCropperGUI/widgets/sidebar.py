@@ -27,7 +27,7 @@ class Sidebar(QWidget):
         self.pipeline_controller = PipelineController()
         
         layout.setSpacing(10)
-        layout.addSpacing(10)
+        layout.addSpacing(8)
 
         # --- DOCS / GITHUB BTN ---
         self.doc_btn = QPushButton("Documentation")
@@ -38,7 +38,7 @@ class Sidebar(QWidget):
         )
 
         self.doc_btn.setIcon(QIcon(icon_path))
-        self.doc_btn.setIconSize(QSize(18, 18))
+        self.doc_btn.setIconSize(QSize(25, 25))
         self.doc_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.doc_btn.clicked.connect(self.open_docs)
 
@@ -106,7 +106,7 @@ class Sidebar(QWidget):
 
         # --- FIND LABEL ---
         find_label = QLabel(
-            "RUN FIND : Click on 'run find' to find the reference bricklinks for each crop"
+            "RUN FIND : Click on 'run find' to find the bricklinks reference for each crop"
         )
         find_label.setWordWrap(True)
         find_label.setSizePolicy(

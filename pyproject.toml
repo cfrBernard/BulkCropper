@@ -1,6 +1,6 @@
 [project]
 name = "BulkCropper"
-version = "v2.2.0_gui_wip"
+version = "2.7.0"
 description = "Crop an image into multiple items"
 authors = [{ name = "C. Bernard", email = "cfr.bernard@yahoo.com" }]
 license = "MIT"

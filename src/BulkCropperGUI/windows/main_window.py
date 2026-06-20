@@ -19,8 +19,8 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("BulkCropper")
-        self.resize(940, 690)
+        self.setWindowTitle("BulkCropper v2.7.0 – GUI Prototype")
+        self.resize(940, 518)
 
         # ⚠️ TEMP FIX (plus tard: config file)
         output_root = Path("data/output")

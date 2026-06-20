@@ -1,6 +1,6 @@
 # BulkCropper
 
-**BulkCropper** is a lightweight computer vision tool written in Python that automatically detects, segments and crops multiple objects from a single image. **Now with an optional Brickognize API integration.**
+**BulkCropper** is a lightweight computer vision tool written in Python that automatically detects, segments and crops multiple objects from a single image. **Now with an optional Brickognize API integration** and an **optional GUI to launch the complete pipeline**.
 
 While the project is primarily designed for LEGO parts, the underlying detection pipeline is generic enough to work with many other isolated objects placed on a clean background.
 
@@ -10,15 +10,9 @@ The goal is simple:
 - Run the application.
 - Retrieve every detected object as an individual PNG.
 
-The project intentionally keeps its dependency stack minimal, relying only on:
-
-- Python
-- OpenCV
-- NumPy
-
 > No machine learning model, no neural network and no external API are required for the core functionality.
 
-![Version](https://img.shields.io/badge/version-v2.0.0-blue)
+![Version](https://img.shields.io/badge/version-v2.7.0-blue)
 ![License](https://img.shields.io/github/license/cfrBernard/BulkCropper)
 
 ## Features:
@@ -27,9 +21,9 @@ The project intentionally keeps its dependency stack minimal, relying only on:
 - Multiple input formats
 - Extracts individual crops with padding
 - Generates debug overlays
-- Lightweight dependency stack
 - Designed for LEGO datasets but applicable to many object types
-- **Optional Brickognize API integration (v2)**
+- **Optional Brickognize API integration (v2+)**
+- **Optional GUI to launch the complete pipeline (v2.7+)**
 
 ---
 
@@ -43,26 +37,13 @@ The project intentionally keeps its dependency stack minimal, relying only on:
 
 ---
 
-## Supported input formats
-
-BulkCropper currently accepts:
-
-- .png
-- .jpg
-- .jpeg
-- .bmp
-- .webp
-
-> Every detected object is exported as an individual .png with transparency.
-
----
-
 ## 🛠 Script Setup
 
 ### Requirements:
 - Python 3.11+
 - opencv-python
 - numpy
+- PySide6
 
 ### Installation :
 
@@ -78,15 +59,23 @@ pip install -e .
 
 ---
 
-## Configuration
+## How to Use:
 
-**Most users will never need to modify the configuration**. However, difficult images *(or setup)* may require fine tuning.
+### Option 1 : GUI
 
-> You can find a debugging and configuration guide [here](docs/config-guide.md).
+#### 1. Run:
+
+```
+BulkCropperGUI
+```
+
+#### 2. Follow the GUI instructions
+
+> This is still a prototype version (which I'm using in production).
 
 ---
 
-## How to Use:
+### Option 2 : CLI
 
 #### 1. Place your input images inside `data/input/`
 
@@ -108,13 +97,29 @@ Although the detection pipeline is designed to be robust, image quality has a di
 
 For best results, **follow these recommendations**.
 
-### 1. Use a matte white background
+---
+
+### 1. Supported input formats
+
+BulkCropper currently accepts:
+
+- .png
+- .jpg
+- .jpeg
+- .bmp
+- .webp
+
+> Every detected object is exported as an individual .png
+
+---
+
+### 2. Use a matte white background
 
 A simple sheet of white paper works perfectly. Avoid glossy or reflective surfaces whenever possible.
 
 ---
 
-### 2. Use diffuse lighting
+### 3. Use diffuse lighting
 
 The algorithm can handle imperfect lighting conditions, but a soft and evenly distributed light source will significantly improve detection quality.
 
@@ -122,7 +127,7 @@ The algorithm can handle imperfect lighting conditions, but a soft and evenly di
 
 ---
 
-### 3. Leave space between objects
+### 4. Leave space between objects
 
 Objects should not touch each other.
 
@@ -130,11 +135,19 @@ Keeping a small gap between pieces greatly improves contour extraction and preve
 
 ---
 
-### 4. Keep a consistent resolution
+### 5. Keep a consistent resolution
 
 BulkCropper has been tested on a specific resolution range where segmentation performs reliably.
 
 > Recommended resolutions and limits will be documented in future releases.
+
+---
+
+## Configuration
+
+**Most users will never need to modify the configuration**. However, difficult images *(or setup)* may require fine tuning.
+
+> You can find a debugging and configuration guide [here](docs/config-guide.md).
 
 ---
 
@@ -166,13 +179,13 @@ Performance mainly depends on:
 
 ---
 
-## Integrations (v2)
+## Integrations
 
 BulkCropper now supports optional external integrations.
 
-- Brickognize API: LEGO part identification from cropped images
+- **Brickognize API**: LEGO part identification from cropped images. See documentation: [`docs/integrations/brickognize.md`](docs/integrations/brickognize.md)
 
-👉 See documentation: [`docs/integrations/brickognize.md`](docs/integrations/brickognize.md)
+- **BulkCropper GUI**: Optional GUI to launch the complete pipeline *(crop + find)*. Once the repository is installed, launch `BulkCropperGUI` to access it. More detailed documentation will follow later.
 
 ---
 

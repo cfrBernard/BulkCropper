@@ -1,5 +1,19 @@
 # Changelog
 
+## [v2.1.0 to v2.7.0] – 2026-06-20
+
+#### **Optional GUI integration**
+
+### Added
+
+- GUI prototype via `BulkCropperGUI` CLI
+- New ``src/BulkCropperGUI/``
+- Support crop & find pipeline
+- Visual output & Bricklink references
+- Main_window = sidebar / explorer / detail panel
+
+---
+
 ## [v2.0.0] – 2026-06-18
 
 #### **Optional Brickognize API integration**

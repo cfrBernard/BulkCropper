@@ -8,14 +8,15 @@
 - [x] Debug image generation
 - [x] Configurable detection pipeline
 - [x] Brickognize API integration
+- [x] Optional graphical interface (GUI)
 
 ## Future improvements
 
 - [ ] improve Brickognize API integration
 - [ ] CLI arguments and advanced options
+- [ ] GUI Improvement
 - [ ] More detailed logging
 - [ ] Interactive debugging tools
-- [ ] Optional graphical interface (GUI)
 - [ ] Automatic resolution recommendations
 - [ ] Export statistics and processing reports
 - [ ] Parallel image processing
