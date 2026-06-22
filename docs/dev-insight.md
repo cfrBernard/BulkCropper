@@ -39,34 +39,60 @@ Reason:
 ```
 BulkCropper/
 ├── data/
+│   ├── brickognize_cache.json
 │   ├── input/
 │   │   └── bulk.png
 │   └── output/
 │       └── bulk/
+│           ├── brickognize.json
+│           └── ID_0001.png
 ├── docs/
+│   ├── CHANGELOG.md
+│   ├── config-guide.md
+│   ├── dev-insight.md
+│   ├── integrations/
+│   │   └── brickognize.md
+│   └── roadmap.md
+├── LICENSE.md
 ├── pyproject.toml
 ├── README.md
 ├── src/
-│   └── BulkCropper/
+│   ├── BulkCropper/
+│   │   ├── __init__.py
+│   │   ├── __main__.py
+│   │   ├── cli.py
+│   │   ├── crop/
+│   │   │   ├── __init__.py
+│   │   │   ├── config.py
+│   │   │   ├── cropper.py
+│   │   │   ├── debug.py
+│   │   │   ├── detector.py
+│   │   │   ├── io.py
+│   │   │   ├── pipeline.py
+│   │   │   └── preprocessing.py
+│   │   └── find/
+│   │       ├── __init__.py
+│   │       ├── api.py
+│   │       ├── cache.py
+│   │       ├── config.py
+│   │       ├── io.py
+│   │       └── pipeline.py
+│   └── BulkCropperGUI/
 │       ├── __init__.py
 │       ├── __main__.py
-│       ├── cli.py
-│       ├── crop/
-│       │   ├── __init__.py
-│       │   ├── config.py
-│       │   ├── cropper.py
-│       │   ├── debug.py
-│       │   ├── detector.py
-│       │   ├── io.py
-│       │   ├── pipeline.py
-│       │   └── preprocessing.py
-│       └── find/
-│           ├── __init__.py
-│           ├── api.py
-│           ├── cache.py
-│           ├── config.py
-│           ├── io.py
-│           └── pipeline.py
+│       ├── app.py
+│       ├── controllers/
+│       │   └── pipeline_controller.py
+│       ├── services/
+│       │   └── output_scanner.py
+│       ├── widgets/
+│       │   ├── details_panel.py
+│       │   ├── explorer.py
+│       │   ├── flow_layout.py
+│       │   ├── image_card.py
+│       │   └── sidebar.py
+│       └── windows/
+│           └── main_window.py
 ├── tests/
 └── var/
     ├── cache/
